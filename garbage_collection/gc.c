@@ -2,19 +2,22 @@
 
 void	ft_free(void *ptr)
 {
-	printf("freed pointer %p\n", ptr);
+	ft_printf("freed pointer %p\n", ptr);
 	free(ptr);
 }
 
-void	*ft_malloc(size_t size, t_list *list)
+void	*ft_malloc(size_t size, t_list **list)
 {
 	void	*ptr;
 
 	ptr = malloc(size);
 	if (!ptr)
 		return (NULL);
-	ft_lstadd_back(&list, ft_lstnew(ptr));
-	printf("malloced %p\n", ptr);
+	if (!(*list))
+		*list = ft_lstnew(ptr);
+	else
+		ft_lstadd_back(list, ft_lstnew(ptr));
+	ft_printf("malloced %p\n", ptr);
 	return (ptr);
 }
 
@@ -36,13 +39,13 @@ int main(void)
 	char *p1;
 	char *p2;
 
-	list = ft_lstnew(NULL);
-	p1 = ft_malloc(sizeof(char) * 4, list);
+	list = NULL;
+	p1 = ft_malloc(sizeof(char) * 4, &list);
 	p1[0] = 'a';
 	p1[1] = 'b';
 	p1[2] = 'c';
 	p1[3] = '\0';
-	p2 = ft_malloc(sizeof(char) * 4, list);
+	p2 = ft_malloc(sizeof(char) * 4, &list);
 	p2[0] = 'd';
 	p2[1] = 'e';
 	p2[2] = 'f';
